@@ -1,0 +1,7 @@
+.idea/
+
+# Don't need to upload inputs
+/**/inputs/
+
+
+/**/target/
