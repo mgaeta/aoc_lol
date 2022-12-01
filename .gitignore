@@ -3,5 +3,4 @@
 # Don't need to upload inputs
 /**/inputs/
 
-
-/**/target/
+.python-version
