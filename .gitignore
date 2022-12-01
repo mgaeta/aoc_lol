@@ -3,4 +3,9 @@
 # Don't need to upload inputs
 /**/inputs/
 
+*.pyc
 .python-version
+
+# Don't leak token
+token.txt
+
