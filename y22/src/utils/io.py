@@ -3,18 +3,19 @@ from pytz import timezone
 import requests
 import os
 
-
 from y22.src.constants import AOC_ROOT, BASE_URL, TOKEN_FILE
 
 
-def get_input_filename(year: int, day: int) -> str:
-    path = f"{AOC_ROOT}/{year_to_directory(year)}/inputs/"
+def get_input_filename(year: int, day: int, test: bool = False) -> str:
+    path = f"{AOC_ROOT}/{year_to_directory(year)}/inputs"
 
     # Ensure path exists.
     if not os.path.isdir(path):
         os.mkdir(path)
 
-    return f"{path}/{day_to_input_filename(day)}.txt"
+    suffix = "_test" if test else ""
+
+    return f"{path}/{day_to_input_filename(day)}{suffix}.txt"
 
 
 def get_inputs(file):
