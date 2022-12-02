@@ -1,26 +1,20 @@
-import math
-
 from y22.src.utils import io
 
 
 def main():
     current_day = io.get_day()
-    filename_test = io.get_input_filename(2022, current_day, test=True)
-    raw_input_test = io.get_inputs_raw(filename_test)
-    filename = io.get_input_filename(2022, current_day, test=False)
-    raw_input = io.get_inputs_raw(filename)
 
-    print(roshambo2(raw_input_test))
-    print(roshambo2(raw_input))
+    for test in [True, False]:
+        filename = io.get_input_filename(2022, current_day, test=test)
+        raw_input = io.get_inputs_raw(filename)
+        print(roshambo2(raw_input))
 
 
 def roshambo2(raw_input):
     total = 0
 
     for row in raw_input:
-        x = row.split(" ")
-        opponent = x[0]
-        outcome = x[1]
+        opponent, outcome = row.split(" ")
 
         total += {
             "X": 0,
@@ -28,24 +22,23 @@ def roshambo2(raw_input):
             "Z": 6,
         }[outcome]
 
-        if opponent == "A":
-            throw = {
+        throw = {
+            "A": {
                 "X": "Z",
                 "Y": "X",
                 "Z": "Y",
-            }[outcome]
-        if opponent == "B":
-            throw = {
+            },
+            "B": {
                 "X": "X",
                 "Y": "Y",
                 "Z": "Z",
-            }[outcome]
-        if opponent == "C":
-            throw = {
+            },
+            "C": {
                 "X": "Y",
                 "Y": "Z",
                 "Z": "X",
-            }[outcome]
+            },
+        }[opponent][outcome]
 
         total += {
             "X": 1,
@@ -59,9 +52,7 @@ def roshambo2(raw_input):
 def roshambo1(raw_input):
     total = 0
     for row in raw_input:
-        x = row.split(" ")
-        opponent = x[0]
-        throw = x[1]
+        opponent, throw = row.split(" ")
 
         total += {
             "X": 1,
@@ -69,24 +60,23 @@ def roshambo1(raw_input):
             "Z": 3,
         }[throw]
 
-        if opponent == "A":
-            total += {
+        total += {
+            "A": {
                 "X": 3,
                 "Y": 6,
                 "Z": 0,
-            }[throw]
-        if opponent == "B":
-            total += {
+            },
+            "B": {
                 "X": 0,
                 "Y": 3,
                 "Z": 6,
-            }[throw]
-        if opponent == "C":
-            total += {
+            },
+            "C": {
                 "X": 6,
                 "Y": 0,
                 "Z": 3,
-            }[throw]
+            }
+        }[opponent][throw]
 
     return total
 
