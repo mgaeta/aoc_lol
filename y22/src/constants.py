@@ -6,4 +6,4 @@ AOC_ROOT = os.path.join(
     "..",
 )
 BASE_URL = "https://adventofcode.com"
-TOKEN_FILE = f"{AOC_ROOT}/token.txt"
+CONFIG_FILE = f"{AOC_ROOT}/config.ini"

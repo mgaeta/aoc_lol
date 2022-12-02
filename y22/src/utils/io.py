@@ -3,7 +3,7 @@ from pytz import timezone
 import requests
 import os
 
-from y22.src.constants import AOC_ROOT, BASE_URL, TOKEN_FILE
+from y22.src.constants import AOC_ROOT, BASE_URL
 
 
 def get_input_filename(year: int, day: int, test: bool = False) -> str:
@@ -18,9 +18,9 @@ def get_input_filename(year: int, day: int, test: bool = False) -> str:
     return f"{path}/{day_to_input_filename(day)}{suffix}.txt"
 
 
-def get_inputs(file):
+def get_inputs_raw(file):
     with open(file, "r") as f:
-        return [_ for _ in f.read().split("\n") if _]
+        return [_ for _ in f.read().split("\n")]
 
 
 def year_to_directory(year: int) -> str:
@@ -32,17 +32,19 @@ def day_to_input_filename(day: int) -> str:
     return f"{prefix}{day}"
 
 
-def download_input(day: int, year: int = 2022) -> str:
+def download_input(configs: dict[str, str], day: int, year: int = 2022) -> str:
     source_url = f"{BASE_URL}/{year}/day/{day}/input"
     destination_file = get_input_filename(year, day)
 
-    # Get token from file.
-    cookies = {}
-    with open(TOKEN_FILE, 'r') as f:
-        cookies["session"] = f.readline()
-
     # Read
-    response = requests.get(source_url, cookies=cookies)
+    response = requests.get(
+        source_url,
+        cookies={
+            "session": configs["token"]
+        }, headers={
+            "User-Agent": configs["email"]
+        }
+    )
 
     # Write
     with open(destination_file, 'w') as f:
@@ -51,7 +53,7 @@ def download_input(day: int, year: int = 2022) -> str:
     return destination_file
 
 
-def get_day(args_day: int) -> int:
+def get_day(args_day: int | None = None) -> int:
     if not args_day:
         # Infer today's day.
         return datetime.now(timezone('EST')).day

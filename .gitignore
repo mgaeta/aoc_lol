@@ -7,5 +7,4 @@
 .python-version
 
 # Don't leak token
-token.txt
-
+config.ini

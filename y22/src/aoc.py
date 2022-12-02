@@ -1,5 +1,7 @@
 import argparse
+import configparser
 
+from y22.src.constants import CONFIG_FILE
 from y22.src.utils import io
 
 
@@ -21,7 +23,9 @@ if __name__ == "__main__":
     current_day = io.get_day(args.day)
 
     if args.inputs:
-        destination = io.download_input(current_day)
+        config = configparser.ConfigParser()
+        config.read(CONFIG_FILE)
+        destination = io.download_input(dict(config['secrets']), current_day)
         print(f"Downloaded inputs to '{destination}'.")
         exit()
 
