@@ -10,8 +10,7 @@ def get_integer_inputs(file: str) -> list[int]:
 
 
 def get_lists_of_lists(file: str) -> list[list[str]]:
-    output = []
-
+    # TODO MARCOS FIRST
     return [_ for _ in get_str_inputs(file)].split()
 
 
@@ -21,6 +20,7 @@ def parse_board(board: str) -> list[str]:
         for row in board.split("\n")
         for cell in row.strip().split()
     ]
+
 
 def parse_board_int(board: str) -> list[int]:
     return [
