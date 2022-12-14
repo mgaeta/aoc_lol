@@ -28,7 +28,7 @@ def year_to_directory(year: int) -> str:
 
 
 def day_to_input_filename(day: int) -> str:
-    prefix = "" if day > 10 else "0"
+    prefix = "0" if day < 10 else ""
     return f"{prefix}{day}"
 
 
