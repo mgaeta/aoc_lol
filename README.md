@@ -1,2 +1,2 @@
-# aoc_lol
+# Advent of Code
 Dumping my "solutions" to a repo
