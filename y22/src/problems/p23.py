@@ -24,7 +24,7 @@ def main():
 def simulate(board: set[tuple[int, int]]) -> int:
     i = 0
     while i < LARGE_NUMBER:
-        print_board(board, i)
+        # print_board(board, i)
         next_board = step(board, i)
         if compare_boards(next_board, board):
             return i + 1
@@ -60,34 +60,28 @@ def get_bounds(board) -> tuple[int, int, int, int]:
 
 
 def step(board: set[tuple[int, int]], i: int) -> set[tuple[int, int]]:
-    to_move = set(board)
-    reverse_proposals = defaultdict(set)
     next_board = set()
 
-    # first half
+    # Populate the reverse_proposals table
+    reverse_proposals = defaultdict(set)
     for (x, y) in board:
         proposed_cardinal_direction = propose_direction(board, x, y, i)
         if proposed_cardinal_direction is not None:
             d_x, d_y = DIRS[proposed_cardinal_direction][1]
-            proposal = (x + d_x, y + d_y)
-            reverse_proposals[proposal].add((x, y))
-        else:
-            next_board.add((x, y))
-            to_move.remove((x, y))
+            reverse_proposals[(x + d_x, y + d_y)].add((x, y))
 
-    # second half
+    # Move all unopposed proposals
+    to_move = set(board)
     for proposal, origins in reverse_proposals.items():
         if len(origins) == 1:
             origin = origins.pop()
-            next_board.add(proposal)
             to_move.remove(origin)
+            next_board.add(proposal)
 
+    # Everyone else stays put.
     for leftover in to_move:
         next_board.add(leftover)
 
-    if len(next_board) != len(board):
-        print_board(next_board, -1)
-        raise Exception("bad")
     return next_board
 
 
