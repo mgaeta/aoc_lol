@@ -8,3 +8,6 @@
 
 # Don't leak token
 config.ini
+
+node_modules/
+dist/
