@@ -5,12 +5,9 @@ import {
     Point,
     serializePoint
 } from "../utils/grid/twoDimensional";
-
+import { isCharacterANumber } from "../utils/string/numbers";
 
 const GEAR_SYMBOL = "*";
-const NUMBER_DICTIONARY = "1234567890";
-
-const isNumber = (input: string): boolean => NUMBER_DICTIONARY.includes(input);
 
 const prepareBoard = (input: string[], options?: {
     debug?: boolean
@@ -33,7 +30,7 @@ const prepareBoard = (input: string[], options?: {
         let currentNumberBuffer = "";
         let currentX = 0;
         for (const char of line.split("")) {
-            if (isNumber(char)) {
+            if (isCharacterANumber(char)) {
                 currentNumberBuffer = currentNumberBuffer.concat(char);
             } else {
                 if (currentNumberBuffer) {

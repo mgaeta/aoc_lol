@@ -1,16 +1,5 @@
 import { range } from "../utils";
-
-const TABLE: { [key: string]: number } = {
-    "eight": 8,
-    "five": 5,
-    "four": 4,
-    "nine": 9,
-    "one": 1,
-    "seven": 7,
-    "six": 6,
-    "three": 3,
-    "two": 2,
-};
+import { parseNumberWord } from "../utils/string/numbers";
 
 export const main = async (input: string[], options?: {
     debug?: boolean
@@ -22,7 +11,9 @@ export const main = async (input: string[], options?: {
             const lastCharacter = parseInt(line.charAt(lastIndex));
             if (isNaN(lastCharacter)) {
                 for (const j of range(lastIndex)) {
-                    const found: number = TABLE[line.substring(lastIndex - j - 1, lastIndex + 1)];
+                    const found = parseNumberWord(
+                        line.substring(lastIndex - j - 1, lastIndex + 1)
+                    );
                     if (found) {
                         foundDigits.push(found);
                         break;
