@@ -1,6 +1,5 @@
 import { range } from "../array";
-
-const SEPARATOR = ":";
+import { SEPARATOR } from "./constants";
 
 export type Point = number[];
 
@@ -8,7 +7,6 @@ export const parsePoint = (pointString: string): Point =>
     pointString.split(SEPARATOR).map(i => parseInt(i));
 
 export const serializePoint = (point: Point): string => point.join(SEPARATOR);
-
 
 /**
  *  Get a list of candidate neighbor points in N-dimensional space.
@@ -33,16 +31,12 @@ export const getNeighbors = (
     }
 ): Set<string> => {
     const dimensionality = validateDimensionality(point, options);
-
-    // This will have to be RECURSIVE.
     const deltaTable = getDeltaTable(dimensionality);
 
     const output: Set<string> = new Set();
     for (const deltas of deltaTable) {
         const candidate = point.map((v, index) => v + deltas[index]);
-        if (
-            isInBounds(candidate, options)
-        ) {
+        if (isInBounds(candidate, options)) {
             output.add(serializePoint(candidate));
         }
     }
@@ -82,7 +76,7 @@ const validateDimensionality = (
     return basePoint.length;
 };
 
-const isInBounds = (
+export const isInBounds = (
     point: Point,
     options?: {
         minPoint?: Point
@@ -94,8 +88,19 @@ const isInBounds = (
         // Assume infinite grid.
         (!options?.maxPoint && !options?.minPoint) ||
         range(dimensionality).every(i => (
-            (point[i] >= (options?.minPoint ? options.minPoint[i] : 0)) ||
-            (point[i] <= (options?.maxPoint ? options.maxPoint[i] : Number.MAX_SAFE_INTEGER))
+            (
+                point[i] >= (
+                    options?.minPoint
+                        ? options.minPoint[i]
+                        : 0
+                )
+            ) || (
+                point[i] <= (
+                    options?.maxPoint
+                        ? options.maxPoint[i]
+                        : Number.MAX_SAFE_INTEGER
+                )
+            )
         ))
     );
 };

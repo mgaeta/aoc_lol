@@ -1,4 +1,5 @@
 const NUMBER_DICTIONARY = "1234567890";
+
 const TABLE: { [key: string]: number } = {
     "eight": 8,
     "five": 5,

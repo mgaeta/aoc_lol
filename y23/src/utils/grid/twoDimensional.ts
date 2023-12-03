@@ -1,3 +1,4 @@
+import { SEPARATOR } from "./constants";
 import { getNeighbors as getNeighborsNDimensional } from "./nDimensional";
 
 export type Point = {
@@ -6,14 +7,15 @@ export type Point = {
 }
 
 export const parsePoint = (pointString: string): Point => {
-    const parts = pointString.split(":");
+    const parts = pointString.split(SEPARATOR);
     return {
         x: parseInt(parts[0]),
         y: parseInt(parts[1]),
     };
 };
 
-export const serializePoint = (point: Point): string => `${point.x}:${point.y}`;
+export const serializePoint = (point: Point): string =>
+    [point.x, point.y].join(SEPARATOR);
 
 export const getNeighbors = (
     point: Point,
