@@ -1,3 +1,9 @@
 import { DateTime } from "luxon";
 
-export const today = DateTime.now().setZone("America/New_York").day.toString().padStart(2, "0");
+const currentTime = DateTime.now().setZone("America/New_York");
+
+export const currentYear = currentTime.year.toString();
+
+export const todayRaw = currentTime.day.toString();
+
+export const today = todayRaw.padStart(2, "0");
