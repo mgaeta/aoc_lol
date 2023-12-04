@@ -1,4 +1,5 @@
 import { range } from "../utils";
+import { intersection } from "../utils/set";
 
 export const main = async (input: string[], options?: {
     debug?: boolean
@@ -8,7 +9,7 @@ export const main = async (input: string[], options?: {
     const copies = Object.fromEntries(range(input.length).map(i => [i + 1, 0]));
 
     let cardsToProcess = range(input.length).map(i => i + 1);
-    while (cardsToProcess.length) {
+    while (true) {
         const card = cardsToProcess.pop();
         if (!card) break;
         copies[card] += 1;
@@ -21,6 +22,10 @@ export const main = async (input: string[], options?: {
     return Object.values(copies).reduce((total, next) => total + next, 0);
 };
 
+const parseNumbers = (numberString: string): Set<number> => new Set(
+    numberString.trim().split(/\s+/).map(i => parseInt(i.trim()))
+);
+
 export const prepareResults = async (input: string[], options?: {
     debug?: boolean
 }): Promise<Map<number, number>> => {
@@ -31,18 +36,14 @@ export const prepareResults = async (input: string[], options?: {
         // Keep this line around so that it can be quickly duplicated.
         if (options?.debug) console.log(line);
 
-        const [card, rest] = line.split(": ");
+        const [card, rest] = line.split(":");
         const [_, idString] = card.split("Card");
         const id = parseInt(idString.trim());
-        const [winning, have] = rest.split(" | ");
-        const winningNumbers = new Set(
-            winning.trim().split(/\s+/).map(i => parseInt(i.trim()))
-        );
-        const haveNumbers = new Set(
-            have.trim().split(/\s+/).map(i => parseInt(i.trim()))
-        );
+        const [winning, have] = rest.split("|");
+        const winningNumbers = parseNumbers(winning);
+        const haveNumbers = parseNumbers(have);
 
-        results.set(id, Array.from(haveNumbers).filter(n => winningNumbers.has(n)).length);
+        results.set(id, intersection(haveNumbers, winningNumbers).size);
     }
     return results;
 };
@@ -51,12 +52,14 @@ export const main1 = async (input: string[], options?: {
     debug?: boolean
 }): Promise<string | number> => {
     const results = await prepareResults(input, options);
-    let total = 0;
-    for (const [_, intersectionCount] of results.entries()) {
-        if (intersectionCount >= 1) {
-            total += 2 ** (intersectionCount - 1);
-        }
-    }
 
-    return total;
+    return Array.from(results.values()).reduce(
+        (total, intersectionCount) =>
+            total + (
+                intersectionCount
+                    ? 2 ** (intersectionCount - 1)
+                    : 0
+            ),
+        0
+    );
 };
