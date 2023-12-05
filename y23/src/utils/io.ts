@@ -20,3 +20,20 @@ export const readInput = async (options?: {
     // TODO MARCOS assuming there is a blank line at the end might be too dangerous.
     return dataRaw.trim().split("\n");
 };
+
+
+export const splitInputs = (input: string[]): string[][] => {
+    const output: string[][] = [];
+    let buffer: string[] = [];
+    for (const line of input) {
+        if (line === "") {
+            output.push(buffer);
+            buffer = [];
+        } else {
+            buffer.push(line);
+        }
+    }
+    // Finally, flush the rest of the buffer.
+    output.push(buffer);
+    return output;
+};
