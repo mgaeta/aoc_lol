@@ -71,18 +71,18 @@ const histogram = (handString: string): Map<string, number> => {
 
 
 const categorize = (hand: string): Category => {
-    const temp = histogram(hand);
+    const frequencies = histogram(hand);
     let pairCount = 0;
     let threeCount = 0;
     let fourCount = 0;
 
-    const jokers = temp.get("J");
-    temp.delete("J");
+    const jokers = frequencies.get("J");
+    frequencies.delete("J");
     const jokerCount = jokers || 0;
 
     if (jokerCount >= 4) return Category.FIVE_OAK;
 
-    for (const [card, count] of temp.entries()) {
+    for (const [card, count] of frequencies.entries()) {
         if (count === 5) return Category.FIVE_OAK;
         if (count === 4) fourCount += 1;
         if (count === 3) threeCount += 1;
@@ -116,13 +116,12 @@ const categorize = (hand: string): Category => {
     throw new Error(`joker count is out of control lol ${jokerCount}`);
 };
 
-
 const categorize0 = (hand: string): Category => {
-    const temp = histogram(hand);
+    const frequencies = histogram(hand);
     let pairCount = 0;
     let threeCount = 0;
 
-    for (const [card, count] of temp.entries()) {
+    for (const [card, count] of frequencies.entries()) {
         if (count === 5) return Category.FIVE_OAK;
         if (count === 4) return Category.FOUR_OAK;
         if (count === 3) threeCount += 1;
@@ -136,23 +135,20 @@ const categorize0 = (hand: string): Category => {
     return Category.HIGH_CARD;
 };
 
-
 export const main = async (input: string[], options?: {
     debug?: boolean
 }): Promise<string | number> => {
     const categories: Map<Category, Entry[]> = new Map<Category, Entry[]>;
 
-    let bets: number[] = [];
     for (const line of input) {
         const [hand, betString] = line.split(" ");
         const bet = parseInt(betString);
         const category = categorize(hand);
+        const nextEntry: Entry = { hand, bet };
+
         if (options?.debug) console.log({ hand, category });
+
         const found = categories.get(category);
-        const nextEntry: Entry = {
-            hand,
-            bet,
-        };
         if (!found) {
             categories.set(category, [nextEntry]);
         } else {
@@ -160,7 +156,6 @@ export const main = async (input: string[], options?: {
             categories.set(category, found);
         }
     }
-
 
     let finalEntries: Entry[] = [];
     for (const category of [
