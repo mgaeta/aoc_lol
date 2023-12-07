@@ -5,16 +5,14 @@ export const main = async (input: string[], options?: {
     debug?: boolean
 }): Promise<string | number> => {
     const { times, distances } = getRaces2(input);
-    console.log({ times, distances });
+    if (options?.debug) console.log({ times, distances });
 
     const ways: number[] = [];
     for (const i of range(times.length)) {
         let w = 0;
         const time = times[i];
         const distance = distances[i];
-
-        // TODO MARCOS BINARY SEARCH?
-        for (const j in range(time)) {
+        for (const j of range(time)) {
             const d = distanceForTime(time, j);
             if (d > distance) w += 1;
         }
@@ -22,29 +20,6 @@ export const main = async (input: string[], options?: {
     }
 
     return ways.reduce((total, next) => next * total, 1);
-
-};
-
-export const main1 = async (input: string[], options?: {
-    debug?: boolean
-}): Promise<string | number> => {
-    const { times, distances } = getRaces(input);
-    console.log({ times, distances });
-
-    const ways: number[] = [];
-    for (const i of range(times.length)) {
-        let w = 0;
-        const time = times[i];
-        const distance = distances[i];
-        for (const j in range(time)) {
-            const d = distanceForTime(time, j);
-            if (d > distance) w += 1;
-        }
-        ways.push(w);
-    }
-
-    return ways.reduce((total, next) => next * total, 1);
-
 };
 
 const getRaces2 = (input: string[]) => {
@@ -66,6 +41,4 @@ const getRaces = (input: string[]) => {
     return { times, distances };
 };
 
-const distanceForTime = (duration: number, powerUp: number): number => {
-    return (duration - powerUp) * powerUp;
-};
+const distanceForTime = (duration: number, powerUp: number): number => (duration - powerUp) * powerUp;
