@@ -1,4 +1,5 @@
 import { range } from "../utils";
+import { histogram } from "../utils/histogram";
 
 enum Category {
     HIGH_CARD = 0,
@@ -56,22 +57,12 @@ const sortEntries = (a: Entry, b: Entry): number => {
     throw new Error("bad card sort");
 };
 
-const histogram = (handString: string): Map<string, number> => {
-    const output = new Map<string, number>();
-    for (const char of handString.split("")) {
-        const found = output.get(char);
-        if (!found) {
-            output.set(char, 1);
-        } else {
-            output.set(char, found + 1);
-        }
-    }
-    return output;
-};
+const handHistogram = (handString: string): Map<string, number> =>
+    histogram(handString.split(""));
 
 
 const categorize = (hand: string): Category => {
-    const frequencies = histogram(hand);
+    const frequencies = handHistogram(hand);
     let pairCount = 0;
     let threeCount = 0;
     let fourCount = 0;
@@ -117,7 +108,7 @@ const categorize = (hand: string): Category => {
 };
 
 const categorize0 = (hand: string): Category => {
-    const frequencies = histogram(hand);
+    const frequencies = handHistogram(hand);
     let pairCount = 0;
     let threeCount = 0;
 

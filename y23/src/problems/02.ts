@@ -30,7 +30,6 @@ export const main = async (input: string[], options?: {
     return total;
 };
 
-
 export const main1 = async (input: string[], options?: {
     debug?: boolean
 }): Promise<string | number> => {

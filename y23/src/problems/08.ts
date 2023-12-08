@@ -51,7 +51,7 @@ export const main = async (input: string[], options?: {
         totals.push(i);
     }
 
-    return leastCommonMultiple(totals, options);
+    return leastCommonMultiple(totals);
 };
 
 export const main1 = async (input: string[], options?: {

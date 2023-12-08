@@ -1,16 +1,10 @@
 import { factor } from "./factor";
+import { union } from "../set";
 
-export const leastCommonMultiple = (nn: number[], options?: {
-    debug?: boolean
-}): number => {
-    const allFactors = new Set<number>();
-    for (const n of nn) {
-        const factors = factor(n);
-        for (const f of factors) {
-            allFactors.add(f);
-        }
-    }
-    const output = Array.from(allFactors).reduce((product, next) => product * next, 1);
-    if (options?.debug) console.log({ nn, allFactors, output });
-    return output;
-};
+export const leastCommonMultiple = (numbers: number[]): number =>
+    Array.from(
+        numbers.reduce(
+            (all, n) =>
+                union(all, new Set<number>(factor(n))), new Set<number>()
+        )
+    ).reduce((product, next) => product * next, 1);
