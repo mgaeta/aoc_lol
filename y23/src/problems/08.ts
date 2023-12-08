@@ -8,8 +8,8 @@ type DictionaryEntry = {
     right: string;
 }
 
-const getNextDirection = (line0: string, index: number): string =>
-    line0.charAt(index % line0.length);
+const getNextDirection = (directions: string, index: number): string =>
+    directions.charAt(index % directions.length);
 
 const prepareDictionary = (input: string[], options?: {
     debug?: boolean
@@ -19,9 +19,7 @@ const prepareDictionary = (input: string[], options?: {
         if (options?.debug) console.log({ line });
         const [name, values] = line.split(" = ");
         const [left, right] = values.slice(1, values.length - 1).split(", ");
-
-        const entry = { left, right };
-        dictionary.set(name, entry);
+        dictionary.set(name, { left, right });
     }
     return dictionary;
 };
@@ -44,10 +42,10 @@ export const main = async (input: string[], options?: {
         let next = thread;
         while (!isEndNode(next)) {
             if (options?.debug) console.log({ next, i });
-            const l = getNextDirection(directions, i);
+            const direction = getNextDirection(directions, i);
             const found = dictionary.get(next);
-            if (!found) throw new Error(`bad direction ${l}`);
-            next = l === "L" ? found.left : found.right;
+            if (!found) throw new Error(`bad direction ${direction}`);
+            next = direction === "L" ? found.left : found.right;
             i += 1;
         }
         totals.push(i);
@@ -66,10 +64,10 @@ export const main1 = async (input: string[], options?: {
     let next = START_NODE;
     while (next != END_NODE) {
         if (options?.debug) console.log({ next, i });
-        const l = getNextDirection(directions, i);
+        const direction = getNextDirection(directions, i);
         const found = dictionary.get(next);
-        if (!found) throw new Error(`bad direction ${l}`);
-        next = l === "L" ? found.left : found.right;
+        if (!found) throw new Error(`bad direction ${direction}`);
+        next = direction === "L" ? found.left : found.right;
         i += 1;
     }
     return i;
