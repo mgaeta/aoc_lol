@@ -1,51 +1,40 @@
 import { range } from "../utils";
+import { cardinality } from "../utils/set";
+
+
+const prepareInput = (input: string[]): number[][] =>
+    input.map(line => line.split(" ").map(i => parseInt(i)));
 
 export const main = async (input: string[], options?: {
     debug?: boolean
-}): Promise<string | number> => {
-    let total = 0;
-    for (const line of input) {
-        if (options?.debug) console.log({ line });
-        const digits = line.split(" ").map(i => parseInt(i));
-        const x = predictPreviousNumber(digits);
-        total += x;
-    }
-    return total;
-};
+}): Promise<string | number> =>
+    prepareInput(input).reduce(
+        (total, numbers) =>
+            total + predictPreviousNumber(numbers),
+        0
+    );
 
-const predictPreviousNumber = (numbers: number []): number => {
-    const allValues = new Set(numbers);
-    if (allValues.size === 1) return Array.from(allValues).pop()!;
+const computeDeltas = (numbers: number[]): number[] =>
+    range(numbers.length - 1).map(i => numbers[i + 1] - numbers[i]);
 
-    const deltas: number[] = [];
-    for (const i of range(numbers.length - 1)) {
-        deltas.push(numbers[i + 1] - numbers[i]);
-    }
-    const next = predictPreviousNumber(deltas);
-    return numbers[0] - next;
-};
+const predictPreviousNumber = (numbers: number []): number =>
+    numbers[0] -
+    cardinality(numbers) === 1
+        ? 0
+        : predictPreviousNumber(computeDeltas(numbers));
+
+const predictNextNumber = (numbers: number []): number =>
+    numbers[numbers.length - 1] +
+    cardinality(numbers) === 1
+        ? 0
+        : predictNextNumber(computeDeltas(numbers));
 
 export const main1 = async (input: string[], options?: {
     debug?: boolean
-}): Promise<string | number> => {
-    let total = 0;
-    for (const line of input) {
-        if (options?.debug) console.log({ line });
-        const digits = line.split(" ").map(i => parseInt(i));
-        const x = predictNextNumber(digits);
-        total += x;
-    }
-    return total;
-};
+}): Promise<string | number> =>
+    prepareInput(input).reduce(
+        (total, numbers) =>
+            total + predictNextNumber((numbers)),
+        0
+    );
 
-const predictNextNumber = (numbers: number []): number => {
-    const allValues = new Set(numbers);
-    if (allValues.size === 1) return Array.from(allValues).pop()!;
-
-    const deltas: number[] = [];
-    for (const i of range(numbers.length - 1)) {
-        deltas.push(numbers[i + 1] - numbers[i]);
-    }
-    const next = predictNextNumber(deltas);
-    return numbers[numbers.length - 1] + next;
-};
