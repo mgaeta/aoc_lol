@@ -1,4 +1,4 @@
-import { leastCommonMultiple } from "../utils/arithmetic";
+import { leastCommonMultiple } from "../utils";
 
 const START_NODE = "AAA";
 const END_NODE = "ZZZ";

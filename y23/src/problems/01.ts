@@ -1,5 +1,5 @@
 import { range } from "../utils";
-import { parseNumberWord } from "../utils/string/numbers";
+import { parseNumberWord } from "../utils/string";
 
 export const main = async (input: string[], options?: {
     debug?: boolean

@@ -17,7 +17,6 @@ export const readInput = async (options?: {
 
     const dataRaw = await readFile(inputFilePath, { encoding: "utf8" });
 
-    // TODO MARCOS assuming there is a blank line at the end might be too dangerous.
     return dataRaw.trim().split("\n");
 };
 

@@ -1,5 +1,4 @@
-import { range } from "../utils";
-import { histogram } from "../utils/histogram";
+import { histogram, range } from "../utils";
 
 enum Category {
     HIGH_CARD = 0,

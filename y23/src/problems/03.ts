@@ -5,7 +5,7 @@ import {
     Point,
     serializePoint
 } from "../utils/grid/twoDimensional";
-import { isCharacterANumber } from "../utils/string/numbers";
+import { isCharacterANumber } from "../utils/string";
 
 const GEAR_SYMBOL = "*";
 
