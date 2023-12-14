@@ -52,7 +52,7 @@ export const main = async (input: string[], options?: {
     return (
         100 * horizontalTotals.reduce((total, next) => total + next, 0)
         + verticalTotals.reduce((total, next) => total + next, 0)
-    );
+    ) / 2; // Every smudge could be just a reflection.
 };
 
 export const main1 = async (input: string[], options?: {
