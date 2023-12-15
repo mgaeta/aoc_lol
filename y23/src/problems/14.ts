@@ -1,96 +1,31 @@
-import { serializePoint } from "../utils/grid/twoDimensional";
+import {
+    findAll,
+    prepareBoard,
+    rotateBoardRight,
+    serializePoint,
+    toString
+} from "../utils/grid/twoDimensional";
 import { range, rangeOf } from "../utils";
 
 const SQUARE_CHAR = "#";
 const ROUND_CHAR = "O";
 const CYCLES_TOTAL = 1000000000;
 
-
-const hashBoard = (
-    board: Map<string, string>,
-    length: number,
-    width: number,
-): string => {
-    let output: string[] = [];
-    for (const y of range(length)) {
-        output.push(
-            range(width).map(x => board.get(serializePoint({
-                x,
-                y
-            })) || ".").join("")
-        );
-    }
-    return output.join("\n");
-};
-
 const countRounds = (
     board: Map<string, string>,
     length: number,
     width: number,
-): number => {
-    let count = 0;
-    for (const y of range(length)) {
-        for (const x of range(width)) {
-            const p = { x, y };
-            const pp = serializePoint(p);
-            const found = board.get(pp);
-            if (found && found === ROUND_CHAR) {
-                count += 1;
-            }
-        }
-    }
-    return count;
-};
-
-const rotateBoardOnce = (
-    board: Map<string, string>,
-    length: number,
-    width: number,
-): Map<string, string> => {
-    const newBoard = new Map<string, string>();
-    const before = countRounds(board, length, width);
-    for (const y of range(length)) {
-        for (const x of range(width)) {
-            const p = { x, y };
-            const pp = serializePoint(p);
-            const found = board.get(pp);
-            if (found) {
-                const n = {
-                    x: length - y - 1,
-                    y: x,
-                };
-
-                const np = serializePoint(n);
-                newBoard.set(np, found);
-            }
-        }
-    }
-
-    const after = countRounds(board, length, width);
-    if (before !== after) throw new Error("number changed");
-    return newBoard;
-};
+): number => findAll(board, length, width, ROUND_CHAR).length;
 
 const getSquaresForBoard = (
     board: Map<string, string>,
     length: number,
     width: number,
     options?: { debug?: boolean }
-): Set<string> => {
-    const output = new Set<string>();
-    for (const y of range(length)) {
-        for (const x of range(width)) {
-            const p = { x, y };
-            const pp = serializePoint(p);
-            const found = board.get(pp);
-            if (found && found === SQUARE_CHAR) output.add(pp);
-        }
-    }
-    return output;
-};
+): Set<string> =>
+    new Set(findAll(board, length, width, SQUARE_CHAR).map(p => serializePoint(p)));
 
 const getSections = (
-    board: Map<string, string>,
     squares: Set<string>,
     length: number,
     width: number,
@@ -184,14 +119,6 @@ const calculateScore = (
     return total;
 };
 
-const printBoard = (
-    board: Map<string, string>,
-    length: number,
-    width: number,
-): void => {
-    console.log(hashBoard(board, length, width));
-};
-
 export const main = async (input: string[], options?: {
     debug?: boolean
 }): Promise<string | number> => {
@@ -217,7 +144,6 @@ export const main = async (input: string[], options?: {
             );
 
             const sections = getSections(
-                board,
                 squares,
                 length,
                 width,
@@ -232,14 +158,17 @@ export const main = async (input: string[], options?: {
                 options,
             );
 
-            for (const x of range(1)) {
-                board = rotateBoardOnce(board, length, width);
-                const temp = width;
-                width = length;
-                length = temp;
-            }
+            const {
+                board: newBoard,
+                length: newLength,
+                width: newWidth
+            } = rotateBoardRight(board, length, width);
+
+            board = newBoard;
+            length = newLength;
+            width = newWidth;
         }
-        const key = hashBoard(board, length, width);
+        const key = toString(board, length, width);
         const found = cache.get(key);
         if (found) {
             j = found;
@@ -257,12 +186,17 @@ export const main = async (input: string[], options?: {
 
     for (const y of range((remainder - 1) * 4)) {
         const squares = getSquaresForBoard(board, length, width);
-        const s = getSections(board, squares, length, width);
+        const s = getSections(squares, length, width);
         board = tilt(board, s, length, width);
-        board = rotateBoardOnce(board, length, width);
-        const temp = width;
-        width = length;
-        length = temp;
+        const {
+            board: newBoard,
+            length: newLength,
+            width: newWidth
+        } = rotateBoardRight(board, length, width);
+
+        board = newBoard;
+        length = newLength;
+        width = newWidth;
     }
 
     return calculateScore(
@@ -282,30 +216,9 @@ export const main1 = async (input: string[], options?: {
         width,
     } = prepareBoard(input);
     const squares = getSquaresForBoard(boardOriginal, length, width);
-    const sectionsByColumn = getSections(boardOriginal, squares, length, width);
+    const sectionsByColumn = getSections(squares, length, width);
     const boardNew = tilt(boardOriginal, sectionsByColumn, length, width);
     return calculateScore(boardNew, length, width);
 };
 
-const prepareBoard = (input: string[], options?: {
-    debug?: boolean
-}): {
-    board: Map<string, string>,
-    length: number,
-    width: number
-} => {
-    const board = new Map<string, string>();
-    let y = 0;
-    let x = 0;
-    for (const line of input) {
-        x = 0;
-        for (const char of line) {
-            const p = { x, y };
-            const pp = serializePoint(p);
-            board.set(pp, char);
-            x += 1;
-        }
-        y += 1;
-    }
-    return { board, length: y, width: x };
-};
+

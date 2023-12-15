@@ -1,5 +1,5 @@
 import { splitInputs } from "../utils/io";
-import { serializePoint } from "../utils/grid/twoDimensional";
+import { prepareBoard, serializePoint } from "../utils/grid/twoDimensional";
 import { range } from "../utils";
 
 const permuteBoard = (
@@ -75,26 +75,6 @@ export const main1 = async (input: string[], options?: {
     );
 };
 
-const prepareBoard = (block: string[], options?: { debug?: boolean }): {
-    board: Map<string, string>,
-    length: number,
-    width: number,
-} => {
-    let y = 0;
-    let x = 0;
-    const board = new Map<string, string>();
-    for (const line of block) {
-        x = 0;
-        for (const char of line) {
-            const point = { x, y };
-            board.set(serializePoint(point), char);
-            x += 1;
-        }
-        y += 1;
-    }
-    if (options?.debug) console.log({ board, x, y });
-    return { board, length: y, width: x };
-};
 
 const findHorizontalSplit = (
     board: Map<string, string>,
