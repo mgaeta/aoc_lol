@@ -88,7 +88,6 @@ const getMain = () => {
 
 (async () => {
     const main = getMain();
-    // await pull();
     if ([TestMode.ALL, TestMode.ON].includes(TEST_MODE)) {
         const input = await readInput({ test: TestMode.ON });
         const result = await main(input, { debug: true });

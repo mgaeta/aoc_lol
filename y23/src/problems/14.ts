@@ -240,8 +240,9 @@ export const main = async (input: string[], options?: {
             }
         }
         const key = hashBoard(board, length, width);
-        if (cache.has(key)) {
-            j = cache.get(key);
+        const found = cache.get(key);
+        if (found) {
+            j = found;
             break;
         }
         cache.set(key, i);
