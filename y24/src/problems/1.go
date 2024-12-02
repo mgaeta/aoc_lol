@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	dayNumber = 1
+	dayNumber = 2
 	verbose   = false
 )
 
@@ -46,7 +46,7 @@ func Solve1a(test bool) string {
 
 	output := 0
 	for i := range lefts {
-		x := abs(lefts[i] - rights[i])
+		x := utils.Abs(lefts[i] - rights[i])
 		if verbose {
 			fmt.Println("asdf", i, lefts[i], rights[i])
 			fmt.Println("x", x)
@@ -56,13 +56,6 @@ func Solve1a(test bool) string {
 	}
 
 	return strconv.Itoa(output)
-}
-
-func abs(a int) int {
-	if a >= 0 {
-		return a
-	}
-	return -a
 }
 
 func Solve1b(test bool) string {

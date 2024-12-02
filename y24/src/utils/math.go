@@ -37,3 +37,10 @@ func MaxFloat(inputs []float64) float64 {
 	}
 	return output
 }
+
+func Abs(a int) int {
+	if a >= 0 {
+		return a
+	}
+	return -a
+}
