@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	dayNumber = 2
-	verbose   = false
+	dayNumber = 3
+	verbose   = true
 )
 
 func Solve1a(test bool) string {
