@@ -8,15 +8,7 @@ import (
 	"y24/src/utils"
 )
 
-const (
-	dayNumber = 3
-	verbose   = true
-)
-
-func Solve1a(test bool) string {
-	fmt.Println("Problem 1a")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
-
+func Solve1a(data string, verbose bool) string {
 	lines := utils.GetStrings(data)
 	lefts := make([]int, 0)
 	rights := make([]int, 0)
@@ -58,9 +50,7 @@ func Solve1a(test bool) string {
 	return strconv.Itoa(output)
 }
 
-func Solve1b(test bool) string {
-	fmt.Println("Problem 1b")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
+func Solve1b(data string, verbose bool) string {
 	lines := utils.GetStrings(data)
 	lefts := make([]int, 0)
 	rights := make([]string, 0)

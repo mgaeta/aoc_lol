@@ -6,9 +6,7 @@ import (
 	"y24/src/utils"
 )
 
-func Solve4a(test bool) string {
-	fmt.Println("Problem 4a:")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
+func Solve4a(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 
@@ -49,9 +47,7 @@ func Solve4a(test bool) string {
 	return strconv.Itoa(output)
 }
 
-func Solve4b(test bool) string {
-	fmt.Println("Problem 4b:")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
+func Solve4b(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 	board, width, height := utils.ParseBoard(lines)

@@ -12,10 +12,7 @@ const mulSting = `mul\(\d{1,3},\d{1,3}\)`
 const doString = `do\(\)`
 const dontSting = `don't\(\)`
 
-func Solve3a(test bool) string {
-	fmt.Println("Problem 2a:")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
-
+func Solve3a(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 	for _, lineString := range lines {
@@ -42,10 +39,7 @@ func Solve3a(test bool) string {
 	return strconv.Itoa(output)
 }
 
-func Solve3b(test bool) string {
-	fmt.Println("Problem 2b:")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
-
+func Solve3b(data string, verbose bool) string {
 	// the solution is going to look like consuming one mul at a time.
 	// once I have a new string I need to look at rest
 	// run three checks: do, don't, and mul

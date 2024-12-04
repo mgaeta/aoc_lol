@@ -7,15 +7,12 @@ import (
 	"y24/src/utils"
 )
 
-func Solve2a(test bool) string {
-	fmt.Println("Problem 2a:")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
-
+func Solve2a(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 	for _, lineString := range lines {
 		line := prepareLine(lineString)
-		result0 := firstUnsafe(line)
+		result0 := firstUnsafe(line, verbose)
 		if result0 == -1 {
 			output += 1
 			continue
@@ -37,7 +34,7 @@ func prepareLine(line string) []int {
 	return output
 }
 
-func firstUnsafe(parts []int) int {
+func firstUnsafe(parts []int, verbose bool) int {
 	if verbose {
 		fmt.Println(parts)
 	}
@@ -76,10 +73,7 @@ func firstUnsafe(parts []int) int {
 	return -1
 }
 
-func Solve2b(test bool) string {
-	fmt.Println("Problem 2b:")
-	data := utils.Read(utils.GetInputFileName(dayNumber, test))
-
+func Solve2b(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 	for _, lineString := range lines {
@@ -88,19 +82,19 @@ func Solve2b(test bool) string {
 			fmt.Println(lineString)
 		}
 		line := prepareLine(lineString)
-		result0 := firstUnsafe(line)
+		result0 := firstUnsafe(line, verbose)
 		if result0 == -1 {
 			output += 1
 			continue
 		}
 
-		result1 := firstUnsafe(line[1:])
+		result1 := firstUnsafe(line[1:], verbose)
 		if result1 == -1 {
 			output += 1
 			continue
 		}
 
-		result2 := firstUnsafe(line[:len(line)-1])
+		result2 := firstUnsafe(line[:len(line)-1], verbose)
 		if result2 == -1 {
 			output += 1
 			continue
@@ -110,7 +104,7 @@ func Solve2b(test bool) string {
 			sliced := make([]int, 0)
 			sliced = append(sliced, line[:i]...)
 			sliced = append(sliced, line[i+1:]...)
-			result3 := firstUnsafe(sliced)
+			result3 := firstUnsafe(sliced, verbose)
 			if result3 == -1 {
 				output += 1
 				break
