@@ -19,20 +19,15 @@ func Solve4a(test bool) string {
 	// I'm going to check that the next three letters are "MAS"
 	// breaking if we hit and edge.
 
-	for _, lineString := range lines {
-		if verbose {
-			fmt.Println(lineString)
-		}
-	}
-
 	board, width, height := utils.ParseBoard(lines)
-	fmt.Println("width:", width, "height:", height)
-	utils.PrintBoard(board)
+	if verbose {
+		fmt.Println("width:", width, "height:", height)
+		utils.PrintBoard(board)
+	}
 
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			found := board[x][y]
-			if found == "X" {
+			if board[x][y] == "X" {
 				neighbors := utils.ListNeighborsN(
 					board,
 					width,
@@ -67,8 +62,7 @@ func Solve4b(test bool) string {
 
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			found := board[x][y]
-			if found == "A" {
+			if board[x][y] == "A" {
 				neighbors := utils.ListNeighborsN(
 					board,
 					width,
