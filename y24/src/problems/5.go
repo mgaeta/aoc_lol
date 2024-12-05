@@ -27,8 +27,7 @@ func firstInvalid(
 ) int {
 	// There can be indirect relationships.
 	for i := 0; i < len(input)-1; i++ {
-		current := input[i]
-		next := input[i+1]
+		current, next := input[i], input[i+1]
 
 		found := false
 		allGreaterThan := findAllGreaterThan(current, greaterThans, verbose)
@@ -87,12 +86,10 @@ func parseData(data string, verbose bool) (map[int][]int, [][]int) {
 			if !ok {
 				found = make([]int, 0)
 			}
-			found = append(found, second)
-			greaterThans[first] = found
+			greaterThans[first] = append(found, second)
 		} else {
-			parts := strings.Split(line, ",")
 			intList := make([]int, 0)
-			for _, s := range parts {
+			for _, s := range strings.Split(line, ",") {
 				x, err := strconv.Atoi(s)
 				if err != nil {
 					panic(err)
@@ -157,7 +154,6 @@ func Solve5b(data string, verbose bool) string {
 
 	greaterThans, updates := parseData(data, verbose)
 	for _, update := range updates {
-
 		if firstInvalid(update, greaterThans, verbose) != -1 {
 			update = repair(update, greaterThans, verbose)
 			output += getMiddleElement(update)
