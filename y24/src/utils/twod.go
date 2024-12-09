@@ -2,8 +2,26 @@ package utils
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
+
+func EncodeTuple(startIndex int, length int) string {
+	return fmt.Sprintf("%d,%d", startIndex, length)
+}
+
+func DecodeTuple(input string) (int, int, error) {
+	parts := strings.Split(input, ",")
+	startIndex, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return 0, 0, err
+	}
+	length, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return 0, 0, err
+	}
+	return startIndex, length, nil
+}
 
 func ParseBoard(input []string) ([][]string, int, int) {
 	firstLine := input[0]

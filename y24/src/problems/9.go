@@ -131,23 +131,6 @@ func Solve9a(data string, verbose bool) string {
 	return strconv.Itoa(output)
 }
 
-func encodeTuple(startIndex int, length int) string {
-	return fmt.Sprintf("%d,%d", startIndex, length)
-}
-
-func decodeTuple(input string) (int, int, error) {
-	parts := strings.Split(input, ",")
-	startIndex, err := strconv.Atoi(parts[0])
-	if err != nil {
-		return 0, 0, err
-	}
-	length, err := strconv.Atoi(parts[1])
-	if err != nil {
-		return 0, 0, err
-	}
-	return startIndex, length, nil
-}
-
 func constructInitialDiskMap2(input string, verbose bool) (map[int]int, []string, []string, int) {
 	lookup := make(map[int]int)
 	// The top of the list is the first free space [0,1,3,...]
@@ -164,7 +147,7 @@ func constructInitialDiskMap2(input string, verbose bool) (map[int]int, []string
 			panic(err)
 		}
 
-		token := encodeTuple(lookupIndex, nextInt)
+		token := utils.EncodeTuple(lookupIndex, nextInt)
 		if isFree {
 			if verbose {
 				fmt.Println("adding to freeQueue", token)
@@ -209,13 +192,13 @@ func cleanup2(
 		}
 
 		nextBlockString := blockQueue[blockQueueIndex]
-		nextBlockStart, nextBlockLength, err := decodeTuple(nextBlockString)
+		nextBlockStart, nextBlockLength, err := utils.DecodeTuple(nextBlockString)
 		if err != nil {
 			panic(err)
 		}
 
 		nextFreeString := freeQueue[freeQueueIndex]
-		nextFreeStart, nextFreeLength, err := decodeTuple(nextFreeString)
+		nextFreeStart, nextFreeLength, err := utils.DecodeTuple(nextFreeString)
 		if err != nil {
 			panic(err)
 		}
@@ -250,7 +233,7 @@ func cleanup2(
 				fmt.Println("remainder", remainder)
 				fmt.Println("nextFreeLength-remainder", nextFreeLength-remainder)
 			}
-			freeQueue[freeQueueIndex] = encodeTuple(nextFreeStart+nextBlockLength, remainder)
+			freeQueue[freeQueueIndex] = utils.EncodeTuple(nextFreeStart+nextBlockLength, remainder)
 		}
 
 		freeQueueIndex = 0
