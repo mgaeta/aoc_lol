@@ -74,7 +74,6 @@ func findTrailHeads(
 	return output
 }
 
-// TODO MARCOS FIRST NO DIAGONAL
 func determineNext(x int, y int, i int) (int, int, error) {
 	switch i {
 	case 0:
@@ -85,11 +84,6 @@ func determineNext(x int, y int, i int) (int, int, error) {
 		return x - 1, y + 1, fmt.Errorf("no diagonal")
 	case 3:
 		return x, y - 1, nil
-	//case 4:
-	//	{
-	//		fmt.Println("=============marcos===============")
-	//		return x, y, nil
-	//	}
 	case 4:
 		return x, y + 1, nil
 	case 5:

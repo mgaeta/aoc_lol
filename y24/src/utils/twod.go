@@ -69,12 +69,11 @@ func ListNeighborsN(
 			}
 			currentString := ""
 			for count := 1; count <= n; count++ {
-
 				nextX := x + deltaX*count
 				nextY := y + deltaY*count
 				if nextX < 0 || nextX >= width || nextY < 0 || nextY >= height {
 					if verbose {
-						fmt.Println("edge")
+						fmt.Println(nextX, nextY, "edge")
 					}
 				} else {
 					currentString = currentString + board[nextX][nextY]
