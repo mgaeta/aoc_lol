@@ -11,30 +11,31 @@ func Solve13a(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 	games := parseInputs(lines)
-	if verbose {
-		for _, game := range games {
+
+	for _, game := range games {
+		if verbose {
 			PrintGame(game)
-			solutions := solveGame(game)
-			if len(solutions) == 0 {
-				continue
-			}
-			minTokens := 9999999999999
-
-			for _, solution := range solutions {
-				x, y, err := utils.DecodeTuple(solution)
-				if err != nil {
-					panic(err)
-				}
-
-				value := x*3 + y
-				if value < minTokens {
-					minTokens = value
-				}
-			}
-			output += minTokens
 		}
-	}
+		solutions := solveGame(game)
+		if len(solutions) == 0 {
+			continue
+		}
+		minTokens := 9999999999999
 
+		for _, solution := range solutions {
+			x, y, err := utils.DecodeTuple(solution)
+			if err != nil {
+				panic(err)
+			}
+
+			value := x*3 + y
+			if value < minTokens {
+				minTokens = value
+			}
+		}
+		output += minTokens
+	}
+	
 	return strconv.Itoa(output)
 }
 
@@ -55,15 +56,14 @@ func solveGame(game Game) []string {
 
 func solveGame2(game Game) []string {
 	output := make([]string, 0)
-	for a := 0; a <= 100; a++ {
-		for b := 0; b <= 100; b++ {
-			testX := game.ValueAX*a + game.ValueBX*b
-			testY := game.ValueAY*a + game.ValueBY*b
-			if testX == game.PrizeX && testY == game.PrizeY {
-				result := utils.EncodeTuple(a, b)
-				output = append(output, result)
-			}
-		}
+	denominator := (game.ValueAX*game.ValueBY - game.ValueAY*game.ValueBX)
+
+	a := (game.PrizeX*game.ValueBY - game.PrizeY*game.ValueBX)
+	b := (game.ValueAX*game.PrizeY - game.ValueAY*game.PrizeX)
+
+	if a%denominator == 0 && b%denominator == 0 {
+		answer := utils.EncodeTuple(a/denominator, b/denominator)
+		output = append(output, answer)
 	}
 	return output
 }
@@ -155,29 +155,27 @@ func Solve13b(data string, verbose bool) string {
 	output := 0
 	lines := utils.GetStrings(data)
 	games := parseInputs(lines)
-	if verbose {
-		for _, game := range games {
+
+	for _, game := range games {
+		if verbose {
 			PrintGame(game)
-			game.PrizeX += 10000000000000
-			game.PrizeY += 10000000000000
-			solutions := solveGame2(game)
-			if len(solutions) == 0 {
-				continue
-			}
-			minTokens := 99999999999999
+		}
+		game.PrizeX += 10000000000000
+		game.PrizeY += 10000000000000
+		solutions := solveGame2(game)
+		if len(solutions) == 0 {
+			continue
+		}
 
-			for _, solution := range solutions {
-				x, y, err := utils.DecodeTuple(solution)
-				if err != nil {
-					panic(err)
-				}
-
-				value := x*3 + y
-				if value < minTokens {
-					minTokens = value
-				}
+		for _, solution := range solutions {
+			x, y, err := utils.DecodeTuple(solution)
+			if err != nil {
+				panic(err)
 			}
-			output += minTokens
+
+			value := x*3 + y
+			output += value
+			break
 		}
 	}
 
