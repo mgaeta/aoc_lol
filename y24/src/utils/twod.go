@@ -23,6 +23,46 @@ func DecodeTuple(input string) (int, int, error) {
 	return startIndex, length, nil
 }
 
+func FindStr(
+	board [][]string,
+	width int,
+	height int,
+	needle string,
+	verbose bool,
+) (int, int) {
+	var currX, currY int
+	found := false
+	for x := 0; x < width; x++ {
+		for y := 0; y < height; y++ {
+
+			if board[x][y] == needle {
+				currX, currY = x, y
+				found = true
+				break
+			}
+		}
+		if found {
+			break
+		}
+	}
+	if verbose {
+		fmt.Println("startX, startY", currX, currY)
+	}
+	return currX, currY
+}
+
+func CopyBoard(board [][]string, width int, height int) [][]string {
+	output := make([][]string, 0)
+	for x := 0; x < width; x++ {
+		column := make([]string, 0)
+		for y := 0; y < height; y++ {
+			column = append(column, board[x][y])
+		}
+		output = append(output, column)
+	}
+	return output
+}
+
 func ParseBoard(input []string) ([][]string, int, int) {
 	firstLine := input[0]
 	width := len(firstLine)
@@ -43,10 +83,10 @@ func ParseBoard(input []string) ([][]string, int, int) {
 	return output, width, height
 }
 
-func PrintBoard(board [][]string) {
-	for _, line := range board {
-		for _, char := range line {
-			fmt.Print(string(char))
+func PrintBoard(board [][]string, width int, height int) {
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			fmt.Print(board[x][y])
 		}
 		fmt.Println()
 	}

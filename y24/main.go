@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	dayNumber = 5
+	dayNumber = 13
 	verbose   = true
 )
 
@@ -36,7 +36,7 @@ func Solve() (F, F) {
 	case 10:
 		return problems.Solve10a, problems.Solve10b
 	case 11:
-		return problems.Solve12a, problems.Solve11b
+		return problems.Solve11a, problems.Solve11b
 	case 12:
 		return problems.Solve12a, problems.Solve12b
 	case 13:
@@ -53,6 +53,18 @@ func Solve() (F, F) {
 		return problems.Solve18a, problems.Solve18b
 	case 19:
 		return problems.Solve19a, problems.Solve19b
+	case 20:
+		return problems.Solve20a, problems.Solve20b
+	case 21:
+		return problems.Solve21a, problems.Solve21b
+	case 22:
+		return problems.Solve22a, problems.Solve22b
+	case 23:
+		return problems.Solve23a, problems.Solve23b
+	case 24:
+		return problems.Solve24a, problems.Solve24b
+	case 25:
+		return problems.Solve25a, problems.Solve25b
 
 	default:
 		panic("invalid day number")
@@ -61,13 +73,14 @@ func Solve() (F, F) {
 }
 
 func main() {
-	part1, part2 := Solve()
+	//part1, _ := Solve()
+	_, part2 := Solve()
 
 	testData := utils.Read(utils.GetInputFileName(dayNumber, true))
 	data := utils.Read(utils.GetInputFileName(dayNumber, false))
 
-	fmt.Println("Test 1:\t", part1(testData, verbose))
-	fmt.Println("REAL 1:\t", part1(data, verbose))
+	//fmt.Println("Test 1:\t", part1(testData, verbose))
+	//fmt.Println("REAL 1:\t", part1(data, verbose))
 	fmt.Println("Test 2:\t", part2(testData, verbose))
 	fmt.Println("REAL 2:\t", part2(data, verbose))
 }
